@@ -1,5 +1,5 @@
 import { Box, Button, Modal, Slider, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 const style = {
     position: 'absolute',
@@ -12,13 +12,18 @@ const style = {
     p: 4,
   };
 
-const FreeBlock = (props: {id: string; index: number; size: number; blockState: any}) => {
-    const {id, size, blockState} = props;
-    let {index} = props;
+const FreeBlock = (props: {index: number; size: number; blockState: [{
+    isAlloc: boolean;
+    size: number;
+}[], Dispatch<SetStateAction<{
+    isAlloc: boolean;
+    size: number;
+}[]>>]}) => {
+    const {size, index, blockState} = props;
     const [blocks, setBlocks] = blockState;
 
     const [bytes, setBytes] = useState(32);
-    const handleChange = (event:any, newValue:number) => {
+    const handleChange = (event: Event, newValue:number) => {
         setBytes(newValue);
       };
 
@@ -28,22 +33,13 @@ const FreeBlock = (props: {id: string; index: number; size: number; blockState: 
 
     useEffect(() => {
         console.log('free block here! Stage just changed!');
-        for (let i = index-2; i < index + 2; i++) {
-            if (i < 0 || i >= blocks.length) {
-                continue;
-            }
-            if (id == blocks[i].id) {
-                index = i;
-                break;
-            }
-        }
     }, [blocks]);
 
     const handleConfirm = () => {
 
         console.log('bytes', bytes);
 
-        setBlocks((prev: { isAlloc: boolean; size: number; id: string}[]) => {
+        setBlocks((prev: { isAlloc: boolean; size: number;}[]) => {
         
             const newBlocks = [...prev];
             newBlocks[index].size -= bytes/2;
@@ -53,7 +49,6 @@ const FreeBlock = (props: {id: string; index: number; size: number; blockState: 
             newBlocks.splice(index, 0, {
                 isAlloc: true,
                 size: bytes,
-                id: crypto.randomUUID()
             })
             
             return newBlocks;
@@ -66,7 +61,7 @@ const FreeBlock = (props: {id: string; index: number; size: number; blockState: 
 
     return (
         <>
-        <div onClick={handleOpen} className="h-full min-w-[20em] bg-blue-200 hover:bg-blue-300 border-[0.005em] border-gray-400 font-bold text-white">
+        <div onClick={handleOpen} className="h-full min-w-[20em] bg-blue-300 hover:bg-blue-200 border-[0.005em] border-gray-400 font-bold text-white">
             <div className="text-3xl w-full h-full flex flex-col justify-center items-center">
                 <h1>Free Block</h1>
                 <h1>Size: {size} bytes</h1>
