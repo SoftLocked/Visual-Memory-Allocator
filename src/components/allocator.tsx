@@ -23,7 +23,7 @@ const Allocator = () => {
         
             const newBlocks = [...prev];
             if (newBlocks.length > 0 && !newBlocks[newBlocks.length - 1].isAlloc) {
-                newBlocks[newBlocks.length - 1].size += 4096/2;
+                newBlocks[newBlocks.length - 1].size += 4096;
             } else {
                 newBlocks.push(
                     {

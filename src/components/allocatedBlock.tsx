@@ -21,12 +21,12 @@ const AllocatedBlock = (props: {index: number; size: number; blockState: [{
             newBlocks[index].isAlloc = false;
             
             if (index+1 < newBlocks.length && !newBlocks[index+1].isAlloc) {
-                newBlocks[index].size += newBlocks[index+1].size/2;
+                newBlocks[index].size += newBlocks[index+1].size;
                 newBlocks.splice(index+1, 1);
             }
 
             if (index-1 >= 0 && !newBlocks[index-1].isAlloc) {
-                newBlocks[index].size += newBlocks[index-1].size/2;
+                newBlocks[index].size += newBlocks[index-1].size;
                 newBlocks.splice(index-1, 1);
             }
 

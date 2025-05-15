@@ -42,8 +42,8 @@ const FreeBlock = (props: {index: number; size: number; blockState: [{
         setBlocks((prev: { isAlloc: boolean; size: number;}[]) => {
         
             const newBlocks = [...prev];
-            newBlocks[index].size -= bytes/2;
-            if (newBlocks[index].size <= bytes/2) {
+            newBlocks[index].size -= bytes;
+            if (newBlocks[index].size <= bytes) {
                 newBlocks.splice(index, 1);
             }
             newBlocks.splice(index, 0, {
